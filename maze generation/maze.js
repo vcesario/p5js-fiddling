@@ -112,7 +112,7 @@ function removeWalls(a, b){
 function mouseClicked(){
 	clearGrid();
 
-	return false;
+	// return false;
 }
 
 function clearGrid(){
