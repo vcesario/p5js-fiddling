@@ -1,15 +1,15 @@
 var cellSize, grid, cols, rows, brushCount, heads;
 
 function setup(){
-	createCanvas(600, 600);
+	createCanvas(400, 400);
 
-	cellSize = 20;
-	brushCount = 12;
+	cellSize = 8;
+	brushCount = 15;
 
 	cols = floor(width / cellSize);
 	rows = floor(height / cellSize);
 
-	clearGrid();
+	refresh();
 }
 
 function draw(){
@@ -110,12 +110,12 @@ function removeWalls(a, b){
 }
 
 function mouseClicked(){
-	clearGrid();
+	refresh();
 
 	// return false;
 }
 
-function clearGrid(){
+function refresh(){
 	grid = [];
 	for (var j = 0; j < rows; j++){
 		for (var i = 0; i < cols; i++){
