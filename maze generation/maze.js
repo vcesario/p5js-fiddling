@@ -1,28 +1,15 @@
-var cols;
-var rows;
-var w = 20;
-var grid = [];
-
-var numOfCarriers = 12;
-var carriers = [];
+var cellSize, grid, cols, rows, brushCount, heads;
 
 function setup(){
 	createCanvas(600, 600);
 
-	cols = floor(width / w);
-	rows = floor(height / w);
+	cellSize = 20;
+	brushCount = 12;
 
-	for (var j = 0; j < rows; j++){
-		for (var i = 0; i < cols; i++){
-			var cell = new Cell(i, j);
-			grid.push(cell);
-		}
-	}
+	cols = floor(width / cellSize);
+	rows = floor(height / cellSize);
 
-	for (var i = 0; i < numOfCarriers; i++){
-		carriers[i] = new Carrier(grid[floor(random(grid.length))], getRandomColor());
-	}
-	
+	clearGrid();
 }
 
 function draw(){
@@ -32,47 +19,47 @@ function draw(){
 		grid[i].show();
 	}
 
-	//highlight carriers
-	for (var i = 0; i < numOfCarriers; i++){
-		carriers[i].current.visited = true;
-		carriers[i].current.highlight();
+	//highlight heads
+	for (var i = 0; i < brushCount; i++){
+		heads[i].current.visited = true;
+		heads[i].current.highlight();
 	}
 
 	//get next
-	for (var i = 0; i < numOfCarriers; i++){
-		var next = carriers[i].current.checkNeighbors();
+	for (var i = 0; i < brushCount; i++){
+		var next = heads[i].current.checkNeighbors();
 		if (next){
 			next.visited = true;
 
-			carriers[i].stack.push(carriers[i].current);
+			heads[i].stack.push(heads[i].current);
 
-			removeWalls(carriers[i].current, next);
+			removeWalls(heads[i].current, next);
 
 
-			carriers[i].updateCurrent(next);
+			heads[i].updateCurrent(next);
 		}
-		else if (carriers[i].stack.length > 0) {
-			carriers[i].current = carriers[i].stack.pop();
+		else if (heads[i].stack.length > 0) {
+			heads[i].current = heads[i].stack.pop();
 
 			//remove from other stacks
-			for (var j = 0; j < numOfCarriers; j++){
+			for (var j = 0; j < brushCount; j++){
 				if (j != i){
-					var index = carriers[j].stack.indexOf(carriers[i].current);
+					var index = heads[j].stack.indexOf(heads[i].current);
 					if (index > -1){
-						carriers[j].stack.splice(index, 1);
+						heads[j].stack.splice(index, 1);
 					}
 				}
 			}
 		}
-		else { //deactivate carriers
-			carriers[i].active = false;
+		else { //deactivate heads
+			heads[i].active = false;
 		}
 	}
 }
 
-function Carrier(current, color){
+function Head(current, color){
 	this.current = current;
-	current.carrier = this;
+	current.head = this;
 
 	this.color = color;
 	this.stack = [];
@@ -80,7 +67,7 @@ function Carrier(current, color){
 
 	this.updateCurrent = function(newCurrent) {
 		this.current = newCurrent;
-		newCurrent.carrier = this;
+		newCurrent.head = this;
 	}
 }
 
@@ -88,8 +75,8 @@ function getRandomColor(){
 	var r = floor(random(256));
 	var g = floor(random(256));
 	var b = floor(random(256));
-	// console.log(r, g, b);
-	return color(r,g,b);
+
+	return color(r, g, b);
 }
 
 function index(i, j){
@@ -121,3 +108,26 @@ function removeWalls(a, b){
 		b.walls[0] = false;	
 	}
 }
+
+function mouseClicked(){
+	clearGrid();
+
+	return false;
+}
+
+function clearGrid(){
+	grid = [];
+	for (var j = 0; j < rows; j++){
+		for (var i = 0; i < cols; i++){
+			var cell = new Cell(i, j);
+			grid.push(cell);
+		}
+	}
+
+	heads = [];
+	for (var i = 0; i < brushCount; i++){
+		var carrier = new Head(grid[floor(random(grid.length))], getRandomColor());
+		heads.push(carrier);
+	}
+}
+

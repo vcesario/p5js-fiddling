@@ -4,7 +4,7 @@ function Cell(i, j){
 	this.walls = [true, true, true, true]; //top, right, bottom, left
 
 	this.visited = false;
-	this.carrier = undefined;
+	this.head = undefined;
 
 	this.checkNeighbors = function(){
 		var neighbors = [];
@@ -37,18 +37,18 @@ function Cell(i, j){
 	}
 
 	this.highlight = function () {
-		if (this.carrier.active){
-			var x = this.i * w;
-			var y = this.j * w;
+		if (this.head.active){
+			var x = this.i * cellSize;
+			var y = this.j * cellSize;
 			noStroke();
 			fill(0, 0, 0, 100);
-			rect (x, y, w, w);
+			rect(x, y, cellSize, cellSize);
 		}
 	}
 
 	this.show = function(){
-		var x = this.i * w;
-		var y = this.j * w;
+		var x = this.i * cellSize;
+		var y = this.j * cellSize;
 		// stroke(255);
 		// if (this.walls[0]){
 		// 	line(x, y, x + w, y);
@@ -66,8 +66,8 @@ function Cell(i, j){
 		if (this.visited){
 			noStroke();
 			// fill(48, 122, 122, 100);
-			fill(this.carrier.color);
-			rect(x, y, w, w);
+			fill(this.head.color);
+			rect(x, y, cellSize, cellSize);
 		}
 	}
 }
