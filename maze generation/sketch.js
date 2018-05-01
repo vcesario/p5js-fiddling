@@ -1,13 +1,14 @@
 var cols;
 var rows;
-var w = 5;
+var w = 20;
 var grid = [];
 
-var numOfCarriers = 10;
+var numOfCarriers = 12;
 var carriers = [];
 
 function setup(){
-	createCanvas(500, 500);
+	createCanvas(600, 600);
+
 	cols = floor(width / w);
 	rows = floor(height / w);
 
@@ -19,13 +20,14 @@ function setup(){
 	}
 
 	for (var i = 0; i < numOfCarriers; i++){
-		carriers[i] = new Carrier(grid[floor(random(grid.length))]);
+		carriers[i] = new Carrier(grid[floor(random(grid.length))], getRandomColor());
 	}
 	
 }
 
 function draw(){
-	background(51);
+	background(51, 0, 51);
+
 	for (var i = 0; i < grid.length; i++){
 		grid[i].show();
 	}
@@ -47,7 +49,7 @@ function draw(){
 			removeWalls(carriers[i].current, next);
 
 
-			carriers[i].current = next;
+			carriers[i].updateCurrent(next);
 		}
 		else if (carriers[i].stack.length > 0) {
 			carriers[i].current = carriers[i].stack.pop();
@@ -62,12 +64,32 @@ function draw(){
 				}
 			}
 		}
+		else { //deactivate carriers
+			carriers[i].active = false;
+		}
 	}
 }
 
-function Carrier(current){
+function Carrier(current, color){
 	this.current = current;
+	current.carrier = this;
+
+	this.color = color;
 	this.stack = [];
+	this.active = true;
+
+	this.updateCurrent = function(newCurrent) {
+		this.current = newCurrent;
+		newCurrent.carrier = this;
+	}
+}
+
+function getRandomColor(){
+	var r = floor(random(256));
+	var g = floor(random(256));
+	var b = floor(random(256));
+	// console.log(r, g, b);
+	return color(r,g,b);
 }
 
 function index(i, j){
