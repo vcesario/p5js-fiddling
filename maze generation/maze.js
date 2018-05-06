@@ -3,8 +3,8 @@ var cellSize, grid, cols, rows, brushCount, heads;
 function setup(){
 	createCanvas(400, 400);
 
-	cellSize = 8;
-	brushCount = 15;
+	cellSize = 10;
+	brushCount = 11;
 
 	cols = floor(width / cellSize);
 	rows = floor(height / cellSize);

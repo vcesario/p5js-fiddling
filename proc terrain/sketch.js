@@ -1,15 +1,13 @@
-var w, h, cols, rows, scl, terrain, xoff, yoff, flying, flySpeed, hue, hueSpeed;
+var cols, rows, scl, terrain, xoff, yoff, flying, flySpeed, hue, hueSpeed;
 
 function setup() {
-	w = 600;
-	h = 600;
-	scl = 20;
 
-	createCanvas(w, h, WEBGL);
+	createCanvas(600, 600, WEBGL);
 	colorMode(HSB);
 	
-	cols = w / scl;
-	rows = h / scl;
+	scl = 20;
+	cols = width / scl;
+	rows = height / scl;
 
 	terrain = [[]];
 	for (var x = 0; x < cols; x ++) {
